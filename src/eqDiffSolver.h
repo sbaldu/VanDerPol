@@ -44,11 +44,13 @@ public:
     m_sol.setCapacity(steps);
     m_sol.add(0, m_x0, m_y0, 0.);
 
-    for (int i{}; i != steps; ++i) {
+    for (int i{1}; i <= steps; ++i) {
       z = x + y * dt;
       y = a_x(x) * y * dt + y;
       x = z;
       t += dt;
+
+	  m_sol.add(i, x, y, t);
     }
   }
 };
