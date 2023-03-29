@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iterator>
 #include <vector>
 #include <cmath>
 #include <functional>
@@ -10,17 +11,44 @@ struct solution {
   std::vector<double> data;
   // number of functions in the system of differential equations
   int n;
+  int Capacity;
 
+  // Constructors
+  solution() = default;
   solution(int n_) : n{n_} {}
-  void setCapacity(int capacity) { data.resize(n * capacity); }
+  solution(int n_, int capacity_) : n{n_}, Capacity{capacity_} {
+	data.resize(n * Capacity);
+  }
+
+  void setCapacity(int capacity) { 
+	data.resize(n * capacity); 
+	Capacity = capacity;
+  }
 
   template <typename T1, typename... Tn>
   void add(int i, T1 arg1, Tn... args) {
 	data[i] = arg1;
-	add(i + n, args...);
+	add(i + Capacity, args...);
   }
 
   void add(int i) {}
+
+  std::vector<double>::iterator it_to_variable(int i) {
+	return data.begin() + Capacity * i;
+  }
+
+  std::vector<double> getVariable_i(int i) {
+	std::vector<double> slice;
+	std::copy(it_to_variable(i), it_to_variable(i) + Capacity, std::back_inserter(slice));
+	
+	return slice;
+  }
+  std::vector<double> getTime() {
+	std::vector<double> slice;
+	std::copy(it_to_variable(n - 1), it_to_variable(n - 1) + Capacity, std::back_inserter(slice));
+	
+	return slice;
+  }
 };
 
 class eulerSolver {
