@@ -3,3 +3,5 @@
 *.pytxcode
 *.out
 *.so
+test.sh
+test/test_solution
