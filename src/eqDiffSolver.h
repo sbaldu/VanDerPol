@@ -77,7 +77,7 @@ public:
 
     for (int i{1}; i <= steps; ++i) {
       z = x + y * dt;
-      y = (m_ax(x) * y + m_bx(x))* dt + y;
+      y = -(m_ax(x) * y + m_bx(x))* dt + y;
       x = z;
       t += dt;
 
