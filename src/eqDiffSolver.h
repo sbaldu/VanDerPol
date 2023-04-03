@@ -53,28 +53,31 @@ struct solution {
 
 class eulerSolver {
 private:
-  double m_x0;
-  double m_y0;
+  coeff_t m_ax;
+  coeff_t m_bx;
   solution m_sol;
 
 public:
-  eulerSolver(double x0, double y0) : m_x0{x0}, m_y0{y0} {}
+  eulerSolver() = default;
+  eulerSolver(coeff_t ax, coeff_t bx) : m_ax{std::move(ax)}, m_bx{std::move(bx)} {}
+
+  solution sol() const { return m_sol; }
 
   // x'' + a(x)x' + b(x) = 0, y = x'
-  void solve(coeff_t a_x, coeff_t b_x, float dt, double max_t) {
-    double x{m_x0};
-    double y{m_y0};
+  void solve(double x0, double y0, float dt, double max_t) {
+    double x{x0};
+    double y{y0};
     double t{};
     double steps{max_t / dt};
     double z;
 
-	m_sol.n = 2;
-    m_sol.setCapacity(steps);
-    m_sol.add(0, m_x0, m_y0, 0.);
+	m_sol.n = 3;
+    m_sol.setCapacity(steps + 1);
+    m_sol.add(0, x0, y0, 0.);
 
     for (int i{1}; i <= steps; ++i) {
       z = x + y * dt;
-      y = a_x(x) * y * dt + y;
+      y = (m_ax(x) * y + m_bx(x))* dt + y;
       x = z;
       t += dt;
 
