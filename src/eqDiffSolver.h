@@ -5,7 +5,6 @@
 #include <functional>
 #include <algorithm>
 
-using coeff_t = std::function<double(double)>;
 
 struct solution {
   std::vector<double> data;
@@ -48,32 +47,52 @@ struct solution {
 };
 
 class eulerSolver {
+using coeff_t = std::function<double(double, double)>;
+
 private:
-  coeff_t m_ax;
-  coeff_t m_bx;
+  const coeff_t m_ax;
+  const coeff_t m_bx;
   solution m_sol;
 
 public:
-  eulerSolver() = default;
+  eulerSolver() = delete;
   eulerSolver(coeff_t ax, coeff_t bx) : m_ax{std::move(ax)}, m_bx{std::move(bx)} {}
 
   solution sol() const { return m_sol; }
 
-  // x'' + a(x)x' + b(x) = 0, y = x'
-  void solve(double x0, double y0, float dt, double max_t) {
+  // a(x,t)x' + b(x,t) = 0
+  void solve(double x0, double t0, float dt, double max_t) {
+    double x{x0};
+    double t{t0};
+    double steps{max_t / dt};
+
+    m_sol.n = 2;
+    m_sol.setCapacity(steps + 1);
+    m_sol.add(0, x0, t0);
+
+    for (int i{1}; i <= steps; ++i) {
+      x = -(m_bx(x,t) / m_ax(x,t)) * dt + x;
+
+      t += dt;
+      m_sol.add(i, x, t);
+    }
+  }
+
+  // x'' + a(x,t)x' + b(x,t) = 0, y(t) = x'(t)
+  void solve(double x0, double y0, double t0, float dt, double max_t) {
     double x{x0};
     double y{y0};
-    double t{};
+    double t{t0};
     double steps{max_t / dt};
     double z;
 
     m_sol.n = 3;
     m_sol.setCapacity(steps + 1);
-    m_sol.add(0, x0, y0, 0.);
+    m_sol.add(0, x0, y0, t0);
 
     for (int i{1}; i <= steps; ++i) {
       z = x + y * dt;
-      y = -(m_ax(x) * y + m_bx(x)) * dt + y;
+      y = -(m_ax(x,t) * y + m_bx(x,t)) * dt + y;
       x = z;
 
       t += dt;
@@ -83,6 +102,8 @@ public:
 };
 
 class rk2Solver {
+using coeff_t = std::function<double(double)>;
+
 private:
   coeff_t m_ax;
   coeff_t m_bx;
@@ -94,6 +115,7 @@ public:
 
   solution sol() const { return m_sol; }
 
+  // y'' + a(x,y)y' + b(x, y) = 0
   void solve(double x0, double y0, double dt, double max_t) {
     double x{x0};
     double y{y0};

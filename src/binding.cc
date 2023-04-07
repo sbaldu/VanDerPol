@@ -7,8 +7,8 @@
 #include "eqDiffSolver.h"
 
 solution vdp_euler(double x0, double y0, double mu, float dt, double max_t) {
-  eulerSolver solver([mu](double x) { return -mu * (1 - x * x); }, [](double x) { return x; });
-  solver.solve(x0, y0, dt, max_t);
+  eulerSolver solver([mu](double x, double) { return -mu * (1 - x * x); }, [](double x, double) { return x; });
+  solver.solve(x0, y0, 0., dt, max_t);
 
   return solver.sol();
 }
