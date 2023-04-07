@@ -7,7 +7,7 @@ bool equal(std::vector<double> const& v1, std::vector<double>&& v2) {
   return v1 == v2;
 }
 
-TEST_CASE("Testing the internal structure of the solution data vector") {
+TEST_CASE("Testing the internal structure of the solution data vector and the add function") {
   // Define a solution object characterized by three variables (ex. x, y and time t)
   // and whose calculated points are 2
   solution sol(3, 2);

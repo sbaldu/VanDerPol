@@ -5,3 +5,4 @@
 *.so
 test.sh
 test/test_solution
+test/test_eulersolver
