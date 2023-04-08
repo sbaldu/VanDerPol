@@ -15,6 +15,7 @@ test: ./test/test_solution.cc ./test/test_eulerSolver.cc
 
 clean:
 	rm -f ./test/test_solution
+	rm -f ./test/test_eulersolver
 	rm -f ./test.sh
 	rm -f ./*a.out
 	clear
