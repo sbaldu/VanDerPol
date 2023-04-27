@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import VanDerPol as vdp
 
 def scatter_plot(x, y, show=True, xlabel='x', ylabel='p'):
+    '''Scatter plotter in the phase space.'''
+
     plt.scatter(x, y, s=10)
     plt.grid('--', linewidth=0.5)
     plt.xlabel(xlabel)
@@ -9,7 +11,9 @@ def scatter_plot(x, y, show=True, xlabel='x', ylabel='p'):
     if show:
         plt.show()
 
-def line_plot(x, y, show=True, xlabel='', ylabel=''):
+def line_plot(x, y, show=True, xlabel='t', ylabel=''):
+    '''Line plotter of position or momentum in the time domain'''
+
     plt.plot(x, y, 'b')
     plt.grid('--', linewidth=0.5)
     plt.xlabel(xlabel)
@@ -36,13 +40,13 @@ scatter_plot(x_e_mu1, y_e_mu1, show=False)
 scatter_plot(x_rk2_mu1, y_rk2_mu1)
 
 # We now increase mu to 5
-## Euler 
+## Euler
 euler_mu5 = vdp.vdp_euler(1., 1., 5., 0.01, 15.)
 x_e_mu5 = euler_mu5.getVariable_i(0)
 y_e_mu5 = euler_mu5.getVariable_i(1)
 scatter_plot(x_e_mu5, y_e_mu5)
 
-## Runge-Kutta 
+## Runge-Kutta
 rk2_mu5 = vdp.vdp_rk2(1., 1., 5., 0.01, 15.)
 x_rk2_mu5 = rk2_mu5.getVariable_i(0)
 y_rk2_mu5 = rk2_mu5.getVariable_i(1)
@@ -53,13 +57,13 @@ scatter_plot(x_e_mu5, y_e_mu5, show=False)
 scatter_plot(x_rk2_mu5, y_rk2_mu5)
 
 # If we further increase mu to 10 the difference between the two methods gets even larger
-## Euler 
+## Euler
 euler_mu10 = vdp.vdp_euler(1., 1., 10., 0.01, 20.)
 x_e_mu10 = euler_mu10.getVariable_i(0)
 y_e_mu10 = euler_mu10.getVariable_i(1)
 scatter_plot(x_e_mu10, y_e_mu10)
 
-## Runge-Kutta 
+## Runge-Kutta
 rk2_mu10 = vdp.vdp_rk2(1., 1., 10., 0.01, 20.)
 x_rk2_mu10 = rk2_mu10.getVariable_i(0)
 y_rk2_mu10 = rk2_mu10.getVariable_i(1)
@@ -70,5 +74,32 @@ scatter_plot(x_e_mu10, y_e_mu10, show=False)
 scatter_plot(x_rk2_mu10, y_rk2_mu10)
 
 # This equation is stiff, and this means that it's highly dependent on the time step that we choose
-# While the Euler method can give a decent approximation, provided that the time step is small enough, 
-# the best numerical method for this type of equations is Runge-Kutta 
+# While the Euler method can give a decent approximation, provided that the time step is small
+# enough,the best numerical method for this type of equations is Runge-Kutta
+## We compare the solutions obtained using R-K for different values of timestep
+rk2_mu1 = vdp.vdp_rk2(1., 1., 1., 0.1, 20.)
+x_rk2_mu1 = rk2_mu1.getVariable_i(0)
+y_rk2_mu1 = rk2_mu1.getVariable_i(1)
+scatter_plot(x_rk2_mu1, y_rk2_mu1, show=False)
+rk2_mu1 = vdp.vdp_rk2(1., 1., 1., 0.01, 20.)
+x_rk2_mu1 = rk2_mu1.getVariable_i(0)
+y_rk2_mu1 = rk2_mu1.getVariable_i(1)
+scatter_plot(x_rk2_mu1, y_rk2_mu1, show=False)
+rk2_mu1 = vdp.vdp_rk2(1., 1., 1., 0.001, 20.)
+x_rk2_mu1 = rk2_mu1.getVariable_i(0)
+y_rk2_mu1 = rk2_mu1.getVariable_i(1)
+scatter_plot(x_rk2_mu1, y_rk2_mu1, show=False)
+rk2_mu1 = vdp.vdp_rk2(1., 1., 1., 0.0001, 20.)
+x_rk2_mu1 = rk2_mu1.getVariable_i(0)
+y_rk2_mu1 = rk2_mu1.getVariable_i(1)
+scatter_plot(x_rk2_mu1, y_rk2_mu1)
+
+# rk2_mu10 = vdp.vdp_rk2(1., 1., 10., 0.01, 20.)
+# x_rk2_mu10 = rk2_mu10.getVariable_i(0)
+# y_rk2_mu10 = rk2_mu10.getVariable_i(1)
+# scatter_plot(x_rk2_mu10, y_rk2_mu10)
+
+# rk2_mu10 = vdp.vdp_rk2(1., 1., 10., 0.01, 20.)
+# x_rk2_mu10 = rk2_mu10.getVariable_i(0)
+# y_rk2_mu10 = rk2_mu10.getVariable_i(1)
+# scatter_plot(x_rk2_mu10, y_rk2_mu10)
