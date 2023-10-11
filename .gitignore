@@ -1,8 +1,15 @@
+# Tex generated files
 *.aux
 *.log
-*.pytxcode
+
+# Executables
 *.out
+
+# Shared libraries
 *.so
-test.sh
-test/test_solution
-test/test_eulersolver
+
+# Cmake build directory
+*build
+
+# Misc.
+*.pytxcode
